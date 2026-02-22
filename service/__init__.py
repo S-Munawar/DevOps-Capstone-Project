@@ -6,6 +6,7 @@ import logging
 import click
 from flask import Flask
 from flask_talisman import Talisman
+from flask_cors import CORS
 from service import config
 
 
@@ -29,6 +30,7 @@ app.logger.setLevel(logging.INFO)
 app.logger.info("Customer Accounts Service starting...")
 
 talisman = Talisman(app, force_https=False)
+CORS(app)
 
 
 # ---------------------------------------------------------------------------
