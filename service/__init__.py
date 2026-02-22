@@ -5,7 +5,9 @@ Package for the Customer Accounts application
 import logging
 import click
 from flask import Flask
+from flask_talisman import Talisman
 from service import config
+
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -25,6 +27,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = config.SQLALCHEMY_TRACK_MODIFICAT
 
 app.logger.setLevel(logging.INFO)
 app.logger.info("Customer Accounts Service starting...")
+
+talisman = Talisman(app, force_https=False)
+
 
 # ---------------------------------------------------------------------------
 # Initialise SQLAlchemy and create tables
