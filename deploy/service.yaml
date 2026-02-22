@@ -1,0 +1,18 @@
+##############################################################################
+# Customer Accounts Service — Kubernetes Service (NodePort for local access)
+##############################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: accounts
+  labels:
+    app: accounts
+spec:
+  type: NodePort
+  selector:
+    app: accounts
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      nodePort: 31000

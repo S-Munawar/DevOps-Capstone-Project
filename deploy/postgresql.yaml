@@ -1,0 +1,53 @@
+##############################################################################
+# PostgreSQL — Deployment + ClusterIP Service
+##############################################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+  labels:
+    app: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+        - name: postgresql
+          image: postgres:alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: accounts-secret
+                  key: database-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: accounts-secret
+                  key: database-password
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: accounts-secret
+                  key: database-name
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  labels:
+    app: postgresql
+spec:
+  selector:
+    app: postgresql
+  ports:
+    - port: 5432
+      targetPort: 5432
